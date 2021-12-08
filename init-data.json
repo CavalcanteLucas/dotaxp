@@ -1,0 +1,16 @@
+[
+    {
+        "model": "dotaxp.Hero",
+        "pk": 1,
+        "fields": {
+            "name": "Abaddon",
+            "main_attr": "STR",
+            "init_agi": 23,
+            "init_int": 18,
+            "init_str": 22,
+            "gain_agi": 1.5,
+            "gain_int": 2.0,
+            "gain_str": 2.8
+        }
+    }
+]
