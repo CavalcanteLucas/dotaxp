@@ -28,7 +28,9 @@ module.exports = {
         "no-dupe-args": "error",
         "no-duplicate-case": "error",
         "no-duplicate-imports": "error",
-        "no-empty": "error"
+        "no-empty": "error",
+        "no-unused-vars": "off",
+        "no-undef": "off",
     },
     "env": {
         "browser": true,
