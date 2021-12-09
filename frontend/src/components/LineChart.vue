@@ -1,41 +1,38 @@
 <script>
 import {Line} from "vue-chartjs";
-import {range} from "../shared/utils.js";
+import {range, transpose} from "../shared/utils.js";
 import chroma from "chroma-js";
 
-function mapStatIntoColorName(statType) {
-    if (statType === 'AGI') {
-        return 'green'
-    } else if (statType === 'INT') {
-        return 'blue'
-    } else if (statType === 'STR') {
-        return 'red'
-    } else {
-        return ''
-    }
-}
-
-function buildStatsDataSets(statType, statsData, selectedHero) {
-    let chromaColor = chroma(mapStatIntoColorName(statType))
+function buildStatsDataSet(statType, statsData, selectedHero, color) {
     return {
         label: selectedHero + " - " + statType,
         data: statsData,
         fill: false,
-        borderColor: chromaColor,
-        backgroundColor: chromaColor,
+        borderColor: color,
+        backgroundColor: color,
         borderWidth: 1,
     };
 }
 
+function getColorPallete(palleteLength) {
+    return transpose([
+        chroma.scale(['#00ff00', 'white']).colors(palleteLength).slice(1, -1),
+        chroma.scale(['#0000ff', 'white']).colors(palleteLength).slice(1, -1),
+        chroma.scale(['#ff0000', 'white']).colors(palleteLength).slice(1, -1)
+    ]).flat().flat()
+}
+
 function getStatsDataSets(statsProgressionSet) {
+    let colorPallete = getColorPallete(Object.keys(statsProgressionSet).length + 2);
     let returnValue = [];
+    let i = 0;
     Object.entries(statsProgressionSet).forEach(([heroName, statusProgressionData]) => {
         Object.entries(statusProgressionData).forEach(([statType, statusProgression]) => {
-            returnValue.push(buildStatsDataSets(statType, statusProgression, heroName))
+            returnValue.push(buildStatsDataSet(statType, statusProgression, heroName, colorPallete[i]));
+            i++;
         })
     });
     return returnValue;
-
 }
 
 export default {
