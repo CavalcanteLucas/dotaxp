@@ -5,7 +5,7 @@
       v-if="statProgressionLoaded"
       :stats-progression-set="statsProgressionSet"
     />
-      <div class="col-md-2">
+      <div class="col-md-3">
         <h4>Available Heroes</h4>
         <select
           id="available-heroes"
@@ -16,19 +16,19 @@
             v-for="hero in availableHeroes"
             :key="hero"
             :value="hero"
-            @click="oneToRight"
+            @click="selectHero"
           >
             {{ hero }}
           </option>
         </select>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-3">
         <h4>Selected Heroes</h4>
         <select
           id="selected-heroes"
           size="4"
           class="form-control"
-          @click="oneToLeft"
+          @click="unselectHero"
         >
           <option
             v-for="hero in selectedHeroes"
@@ -43,7 +43,12 @@
     <br>
     <div class="row justify-content-center">
         <div class="col-md-3">
-            <button type="button" class="btn btn-secondary">Plot Selection!</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="plotSelection">
+                Plot Selection!
+            </button>
         </div>
     </div>
   </div>
@@ -61,12 +66,15 @@ export default {
             statsProgression: null,
             statProgressionLoaded: false,
 
-            availableHeroes: ['a', 'b', 'c'],
+            availableHeroes: [],
+            availableHeroesLoaded: false,
+
             selectedHeroes: []
         }
     },
     async created() {
         await this.getStatProgression()
+        await this.getAvailableHeroes()
     },
     methods: {
         async getStatProgression() {
@@ -83,7 +91,25 @@ export default {
             this.statProgressionLoaded = response.ok;
         },
 
-        oneToRight: function() {
+        async getAvailableHeroes() {
+            let response = await fetch(
+                `${process.env.VUE_APP_BACKEND_API}/dotaxp/heroes/`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }
+            );
+            let data = await response.json();
+            Object.values(data).forEach((availableHero) => {this.availableHeroes.push(availableHero.name)})
+            this.availableHeroesLoaded = response.ok;
+        },
+
+        plotSelection: function() {
+            Object.values(this.selectedHeroes).forEach((selectedHero) => {console.log(selectedHero)})
+        },
+
+        selectHero: function() {
             var selection = document.getElementById('available-heroes').value
             if(selection !== "") {
                 this.selectedHeroes.push(selection)
@@ -91,7 +117,7 @@ export default {
                 this.availableHeroes.splice(del, 1)
             }
         },
-        oneToLeft: function() {
+        unselectHero: function() {
             var selection = document.getElementById('selected-heroes').value
             if(selection !== "") {
                 this.availableHeroes.push(selection)
