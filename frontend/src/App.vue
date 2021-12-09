@@ -1,16 +1,24 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">
-        Home
-      </router-link> |
-      <router-link to="/stats-progression">
-        Stats Progression
-      </router-link>
+    <div class="container">
+      <div id="nav">
+        <router-link to="/">
+          Home
+        </router-link> |
+        <router-link to="/stats-progression">
+          Stats Progression
+        </router-link>
+      </div>
+      <router-view />
     </div>
-    <router-view />
   </div>
 </template>
+
+<script>
+export default {
+    name: 'App'
+}
+</script>
 
 <style>
 #app {
@@ -57,4 +65,6 @@ body {
   background: lightgrey;
   height: 100%;
 }
+
+@import'~bootstrap/dist/css/bootstrap.css'
 </style>
