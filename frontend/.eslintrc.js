@@ -31,6 +31,7 @@ module.exports = {
         "no-empty": "error",
         "no-unused-vars": "off",
         "no-undef": "off",
+        "no-debugger": "off",
     },
     "env": {
         "browser": true,

@@ -6,13 +6,13 @@ class Hero(models.Model):
         verbose_name_plural = 'heroes'
 
     class Attribute:
-        AGILITY = 'AGI'
-        INTELLIGENCE = 'INT'
-        STRENGTH = 'STR'
+        AGI = 'AGI'
+        INT = 'INT'
+        STR = 'STR'
         CHOICES = [
-            (AGILITY, 'Agility'),
-            (INTELLIGENCE, 'Intelligence'),
-            (STRENGTH, 'Strength'),
+            (AGI, 'Agility'),
+            (INT, 'Intelligence'),
+            (STR, 'Strength'),
         ]
 
     name = models.CharField(max_length=30)
@@ -46,3 +46,10 @@ class Hero(models.Model):
         return [
             float(self.init_str + self.gain_str * level) for level in range(1, 31)
         ]
+
+    def get_stats_progression(self):
+        return {
+            self.Attribute.AGI: self.get_agi_progression(),
+            self.Attribute.INT: self.get_int_progression(),
+            self.Attribute.STR: self.get_str_progression(),
+        }

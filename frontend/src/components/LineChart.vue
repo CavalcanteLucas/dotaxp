@@ -5,7 +5,15 @@ import {range} from '../shared/utils.js'
 export default {
     extends: Line,
     props: {
-        inputData: {
+        agiStats: {
+            type: Array,
+            required: true
+        },
+        intStats: {
+            type: Array,
+            required: true
+        },
+        strStats: {
             type: Array,
             required: true
         }
@@ -16,11 +24,27 @@ export default {
                 labels: range(1, 31),
                 datasets: [
                     {
-                        label: "Line Chart",
-                        data: this.inputData,
+                        label: "Agility",
+                        data: this.agiStats,
                         fill: false,
-                        borderColor: "#2554FF",
-                        backgroundColor: "#2554FF",
+                        borderColor: "green",
+                        backgroundColor: "green",
+                        borderWidth: 1,
+                    },
+                    {
+                        label: "Itelligence",
+                        data: this.intStats,
+                        fill: false,
+                        borderColor: "blue",
+                        backgroundColor: "blue",
+                        borderWidth: 1,
+                    },
+                    {
+                        label: "Strengh",
+                        data: this.strStats,
+                        fill: false,
+                        borderColor: "red",
+                        backgroundColor: "red",
                         borderWidth: 1,
                     },
                 ],

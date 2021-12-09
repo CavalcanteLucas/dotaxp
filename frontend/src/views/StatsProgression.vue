@@ -1,7 +1,11 @@
 <template>
   <div>
     <h3>Line Chart</h3>
-    <line-chart v-if="statProgressionLoaded" v-bind:inputData="statProgression"/>
+    <line-chart
+        v-if="statProgressionLoaded"
+        v-bind:agiStats="agiStats"
+        v-bind:intStats="intStats"
+        v-bind:strStats="strStats"/>
   </div>
 </template>
 
@@ -12,7 +16,9 @@ export default {
     components: {LineChart},
     data() {
         return {
-            statProgression: new Array(30).fill(0),
+            agiStats: new Array(30).fill(0),
+            intStats: new Array(30).fill(0),
+            strStats: new Array(30).fill(0),
             statProgressionLoaded: false
         }
     },
@@ -31,7 +37,9 @@ export default {
                 }
             );
             let data = await response.json();
-            this.statProgression = data.progression;
+            this.agiStats = data.progression.AGI;
+            this.intStats = data.progression.INT;
+            this.strStats = data.progression.STR;
             this.statProgressionLoaded = response.ok;
         }
     }
