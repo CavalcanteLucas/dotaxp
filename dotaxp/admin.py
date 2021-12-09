@@ -1,12 +1,7 @@
 from django.contrib import admin
-from .models import Hero, HeroLife
+from .models import Hero
 
 
 @admin.register(Hero)
 class HeroAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(HeroLife)
-class HeroLifeAdmin(admin.ModelAdmin):
-    pass
+    model = Hero

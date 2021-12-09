@@ -5,5 +5,9 @@ from . import views
 app_name = 'dotaxp'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path(
+        'hero-stat-progression/',
+        views.get_hero_stat_progression,
+        name='hero-stat-progression',
+    ),
 ]

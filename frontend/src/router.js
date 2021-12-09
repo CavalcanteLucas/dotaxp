@@ -12,9 +12,9 @@ const routes = [
         component: Home
     },
     {
-        path: '/line',
-        name: 'Line',
-        component: () => import('./views/Line.vue')
+        path: '/stats-progression',
+        name: 'StatsProgression',
+        component: () => import('./views/StatsProgression.vue')
     }
 ]
 

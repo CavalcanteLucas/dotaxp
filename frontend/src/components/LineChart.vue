@@ -1,27 +1,23 @@
 <script>
-import {Line} from "vue-chartjs";
+import {Line} from 'vue-chartjs';
+import {range} from '../shared/utils.js'
 
 export default {
     extends: Line,
+    props: {
+        inputData: {
+            type: Array,
+            required: true
+        }
+    },
     data() {
         return {
             chartData: {
-                labels: [
-                    "Babol",
-                    "Cabanatuan",
-                    "Daegu",
-                    "Jerusalem",
-                    "Fairfield",
-                    "New York",
-                    "Gangtok",
-                    "Buenos Aires",
-                    "Hafar Al-Batin",
-                    "Idlib",
-                ],
+                labels: range(1, 31),
                 datasets: [
                     {
                         label: "Line Chart",
-                        data: [600, 1150, 342, 6050, 2522, 3241, 1259, 157, 1545, 9841],
+                        data: this.inputData,
                         fill: false,
                         borderColor: "#2554FF",
                         backgroundColor: "#2554FF",
@@ -34,7 +30,7 @@ export default {
                     yAxes: [
                         {
                             ticks: {
-                                beginAtZero: true,
+                                min: 0,
                             },
                             gridLines: {
                                 display: true,
@@ -44,6 +40,9 @@ export default {
                     ],
                     xAxes: [
                         {
+                            ticks: {
+                                min: 0,
+                            },
                             gridLines: {
                                 display: true,
                             },
