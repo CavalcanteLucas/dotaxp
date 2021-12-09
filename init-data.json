@@ -12,5 +12,19 @@
             "gain_int": 2.0,
             "gain_str": 2.8
         }
+    },
+    {
+        "model": "dotaxp.Hero",
+        "pk": 2,
+        "fields": {
+            "name": "Alchemist",
+            "main_attr": "STR",
+            "init_agi": 22,
+            "init_int": 25,
+            "init_str": 25,
+            "gain_agi": 1.5,
+            "gain_int": 1.8,
+            "gain_str": 2.9
+        }
     }
 ]

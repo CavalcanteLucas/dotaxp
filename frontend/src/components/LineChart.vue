@@ -1,53 +1,56 @@
 <script>
-import {Line} from 'vue-chartjs';
-import {range} from '../shared/utils.js'
+import {Line} from "vue-chartjs";
+import {range} from "../shared/utils.js";
+import chroma from "chroma-js";
+
+function mapStatIntoColorName(statType) {
+    if (statType === 'AGI') {
+        return 'green'
+    } else if (statType === 'INT') {
+        return 'blue'
+    } else if (statType === 'STR') {
+        return 'red'
+    } else {
+        return ''
+    }
+}
+
+function buildStatsDataSets(statType, statsData, selectedHero) {
+    let chromaColor = chroma(mapStatIntoColorName(statType))
+    return {
+        label: selectedHero + " - " + statType,
+        data: statsData,
+        fill: false,
+        borderColor: chromaColor,
+        backgroundColor: chromaColor,
+        borderWidth: 1,
+    };
+}
+
+function getStatsDataSets(statsProgressionSet) {
+    let returnValue = [];
+    Object.entries(statsProgressionSet).forEach(([heroName, statusProgressionData]) => {
+        Object.entries(statusProgressionData).forEach(([statType, statusProgression]) => {
+            returnValue.push(buildStatsDataSets(statType, statusProgression, heroName))
+        })
+    });
+    return returnValue;
+
+}
 
 export default {
     extends: Line,
     props: {
-        agiStats: {
-            type: Array,
-            required: true
-        },
-        intStats: {
-            type: Array,
-            required: true
-        },
-        strStats: {
-            type: Array,
-            required: true
+        statsProgressionSet: {
+            type: Object,
+            required: true,
         }
     },
     data() {
         return {
             chartData: {
                 labels: range(1, 31),
-                datasets: [
-                    {
-                        label: "Agility",
-                        data: this.agiStats,
-                        fill: false,
-                        borderColor: "green",
-                        backgroundColor: "green",
-                        borderWidth: 1,
-                    },
-                    {
-                        label: "Itelligence",
-                        data: this.intStats,
-                        fill: false,
-                        borderColor: "blue",
-                        backgroundColor: "blue",
-                        borderWidth: 1,
-                    },
-                    {
-                        label: "Strengh",
-                        data: this.strStats,
-                        fill: false,
-                        borderColor: "red",
-                        backgroundColor: "red",
-                        borderWidth: 1,
-                    },
-                ],
+                datasets: getStatsDataSets(this.statsProgressionSet),
             },
             options: {
                 scales: {
