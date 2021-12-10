@@ -27,7 +27,7 @@ function getStatsDataSets(statsProgressionSets) {
     let returnValue = [];
     let i = 0;
     statsProgressionSets.forEach((hero) => {
-        Object.entries(hero.progression_set).forEach(([statType, statusProgression]) => {
+        Object.entries(hero.stats_progression).forEach(([statType, statusProgression]) => {
             returnValue.push(buildStatsDataSet(statType, statusProgression, hero.name, colorPallete[i]));
             i++;
         })
@@ -40,49 +40,63 @@ export default {
     props: {
         statsProgressionSets: {
             type: Array,
-            required: true,
+            required: false,
         }
     },
-    data() {
-        return {
-            chartData: {
-                labels: range(1, 31),
-                datasets: getStatsDataSets(this.statsProgressionSets),
-            },
-            options: {
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 0,
-                            },
-                            gridLines: {
-                                display: true,
-                                color: "#202020",
-                            },
-                        },
-                    ],
-                    xAxes: [
-                        {
-                            ticks: {
-                                min: 0,
-                            },
-                            gridLines: {
-                                display: true,
-                            },
-                        },
-                    ],
-                },
-                legend: {
-                    display: true,
-                },
-                responsive: true,
-                maintainAspectRatio: false,
-            },
-        };
+    computed: {
+        chartData() {
+            return this.statsProgressionSets;
+        }
+    },
+    watch: {
+        statsProgressionSets() {
+            this.$nextTick(() => {
+                this.renderLineChart();
+            })
+        }
     },
     mounted() {
-        this.renderChart(this.chartData, this.options);
+        this.renderLineChart();
     },
+    methods: {
+        renderLineChart() {
+            this.renderChart(
+                {
+                    labels: range(1, 31),
+                    datasets: getStatsDataSets(this.statsProgressionSets),
+                },
+                {
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    min: 0,
+                                },
+                                gridLines: {
+                                    display: true,
+                                    color: "#202020",
+                                },
+                            },
+                        ],
+                        xAxes: [
+                            {
+                                ticks: {
+                                    min: 0,
+                                },
+                                gridLines: {
+                                    display: true,
+                                },
+                            },
+                        ],
+                    },
+                    legend: {
+                        display: true,
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                },
+            )
+        }
+    }
 };
 </script>

@@ -2,7 +2,7 @@
   <div>
     <div class="row justify-content-center">
       <line-chart
-        v-if="statsProgressionSetsLoaded"
+        id="stats-progression-chart"
         :stats-progression-sets="statsProgressionSets"
       />
       <div class="col-md-3">
@@ -65,34 +65,14 @@ export default {
     data() {
         return {
             statsProgressionSets: [],
-            statsProgressionSetsLoaded: false,
-
             availableHeroes: [],
-            availableHeroesLoaded: false,
-
             selectedHeroes: [],
-            // selectedHeroesLoaded: false,
         }
     },
     async created() {
-        await this.getStatProgression()
         await this.getAvailableHeroes()
     },
     methods: {
-        async getStatProgression() {
-            let response = await fetch(
-                `${process.env.VUE_APP_BACKEND_API}/dotaxp/hero-stat-progression/`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                }
-            );
-            let {data} = await response.json();
-            this.statsProgressionSets = data;
-            this.statsProgressionSetsLoaded = response.ok;
-        },
-
         async getAvailableHeroes() {
             let response = await fetch(
                 `${process.env.VUE_APP_BACKEND_API}/dotaxp/heroes/`,
@@ -111,7 +91,6 @@ export default {
                     }
                 )
             })
-            this.availableHeroesLoaded = response.ok;
         },
 
         plotSelection() {
@@ -131,15 +110,13 @@ export default {
                         statsProgressionSets.push(
                             {
                                 name: selectedHero.name,
-                                progressionSet: data['stats_progression']
+                                stats_progression: data['stats_progression']
                             }
                         )
                     });
                 }
             )
             this.statsProgressionSets = statsProgressionSets
-            // console.log(statsProgressionSets)
-            // this.selectedHeroesLoaded = true;
         },
 
         selectHero: function() {
