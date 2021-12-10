@@ -5,47 +5,95 @@
         id="stats-progression-chart"
         :stats-progression-sets="statsProgressionSets"
       />
+
+      <!-- Available Heroes -->
       <div class="col-md-3">
-        <h4>Available Heroes</h4>
+        <form class="form-inline" @submit.prevent>
+          <label><strong>Available Heroes</strong></label>
+          <input
+            v-model="searchAvailableHero"
+            type="text"
+            class="form-control"
+            placeholder="Hero name"
+          >
+        </form>
+        <br>
         <div style="height: 100px; overflow-y: scroll; background-color: grey;">
-          <div class="list-group" id="available-heroes">
+          <div
+            id="available-heroes"
+            class="list-group"
+          >
             <button
-              class="list-group-item list-group-item-action list-group-item-dark"
-              v-for="hero in availableHeroes"
+              v-for="hero in filterAvailableHeroes(availableHeroes)"
               :key="hero.id"
+              class="list-group-item list-group-item-action list-group-item-dark"
               @click="selectHero(hero.name)"
             >
-              <img :src="require(`../assets/icons/heroes/${hero.name}.png`)" />
-              {{hero.name}}
+              <img :src="require(`../assets/icons/heroes/${hero.name}.png`)">
+              {{ hero.name }}
             </button>
           </div>
         </div>
       </div>
+
+      <!-- Selected Heroes -->
       <div class="col-md-3">
-        <h4>Selected Heroes</h4>
+        <form class="form-inline" @submit.prevent>
+          <label><strong>Selected Heroes</strong></label>
+          <input
+            v-model="searchSelectedHero"
+            type="text"
+            class="form-control"
+            placeholder="Hero name"
+          >
+        </form>
+        <br>
         <div style="height: 100px; overflow-y: scroll; background-color: grey;">
-          <div class="list-group" id="selected-heroes">
+          <div
+            id="selected-heroes"
+            class="list-group"
+          >
             <button
-              class="list-group-item list-group-item-action list-group-item-dark"
-              v-for="hero in selectedHeroes"
+              v-for="hero in filterSelectedHeroes(selectedHeroes)"
               :key="hero.id"
-              @click="unselectHero(hero.name)">
-              <img :src="require(`../assets/icons/heroes/${hero.name}.png`)" />
-              {{hero.name}}
+              class="list-group-item list-group-item-action list-group-item-dark"
+              @click="unselectHero(hero.name)"
+            >
+              <img :src="require(`../assets/icons/heroes/${hero.name}.png`)">
+              {{ hero.name }}
             </button>
           </div>
         </div>
       </div>
     </div>
     <br>
+
     <div class="row justify-content-center">
-      <div class="col-md-3">
+      <div class="col-md-1">
         <button
           type="button"
           class="btn btn-secondary"
           @click="plotSelection"
         >
-          Plot Selection!
+          &#8811;
+        </button>
+      </div>
+      <div class="col-md-1">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          @click="plotSelection"
+        >
+            &#10004;
+        </button>
+      </div>
+      <div class="col-md-1">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          @click="plotSelection"
+        >
+         &#8810;
         </button>
       </div>
     </div>
@@ -62,6 +110,9 @@ export default {
             statsProgressionSets: [],
             availableHeroes: [],
             selectedHeroes: [],
+
+            searchAvailableHero: "",
+            searchSelectedHero: "",
         }
     },
     async created() {
@@ -125,6 +176,7 @@ export default {
                 this.availableHeroes.splice(del, 1)
             }
         },
+
         unselectHero: function(selectedHeroName) {
             if(selectedHeroName) {
                 var selectedHero = this.selectedHeroes.filter(
@@ -135,6 +187,20 @@ export default {
                 var del = this.selectedHeroes.indexOf(...selectedHero)
                 this.selectedHeroes.splice(del, 1)
             }
+        },
+
+        filterAvailableHeroes: function(availableHeroes) {
+            let searchAvailableHero = this.searchAvailableHero;
+            return availableHeroes.filter(function(availableHero) {
+                return availableHero.name.toLowerCase().includes(searchAvailableHero.toLowerCase());
+            })
+        },
+
+        filterSelectedHeroes: function(selectedHeroes) {
+            let searchSelectedHero = this.searchSelectedHero;
+            return selectedHeroes.filter(function(selectedHero) {
+                return selectedHero.name.toLowerCase().includes(searchSelectedHero.toLowerCase());
+            })
         }
     }
 };

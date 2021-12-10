@@ -40,7 +40,7 @@ export default {
     props: {
         statsProgressionSets: {
             type: Array,
-            required: false,
+            required: true,
         }
     },
     computed: {
