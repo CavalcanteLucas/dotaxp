@@ -10,14 +10,26 @@
       <div class="col-md-3">
         <form class="form-inline" @submit.prevent>
           <label><strong>Available Heroes</strong></label>
-          <input
-            v-model="searchAvailableHero"
-            type="text"
-            class="form-control"
-            placeholder="Hero name"
-          >
+
+          <div class="input-group mb-3">
+            <input
+              v-model="searchAvailableHero"
+              type="text"
+              class="form-control"
+              placeholder="Hero name"
+            >
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                @click="clearFilterAvailableHeroes()"
+              >
+                  <span>&#x2715;</span>
+              </button>
+            </div>
+          </div>
+
         </form>
-        <br>
         <div style="height: 100px; overflow-y: scroll; background-color: grey;">
           <div
             id="available-heroes"
@@ -40,14 +52,24 @@
       <div class="col-md-3">
         <form class="form-inline" @submit.prevent>
           <label><strong>Selected Heroes</strong></label>
-          <input
-            v-model="searchSelectedHero"
-            type="text"
-            class="form-control"
-            placeholder="Hero name"
-          >
+          <div class="input-group mb-3">
+            <input
+              v-model="searchSelectedHero"
+              type="text"
+              class="form-control"
+              placeholder="Hero name"
+            >
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                @click="clearFilterSelectedHeroes()"
+              >
+                <span>&#x2715;</span>
+              </button>
+            </div>
+          </div>
         </form>
-        <br>
         <div style="height: 100px; overflow-y: scroll; background-color: grey;">
           <div
             id="selected-heroes"
@@ -72,7 +94,7 @@
       <div class="col-md-1">
         <button
           type="button"
-          class="btn btn-outline-secondary"
+          class="btn btn-dark"
           @click="selectAllHeroes"
         >
           &#8811;
@@ -81,16 +103,16 @@
       <div class="col-md-1">
         <button
           type="button"
-          class="btn btn-secondary"
+          class="btn btn-dark"
           @click="plotSelection"
         >
-            &#10004;
+            &#x27f3;
         </button>
       </div>
       <div class="col-md-1">
         <button
           type="button"
-          class="btn btn-outline-secondary"
+          class="btn btn-dark"
           @click="unselectAllHeroes"
         >
          &#8810;
@@ -215,7 +237,15 @@ export default {
             return selectedHeroes.filter(function(selectedHero) {
                 return selectedHero.name.toLowerCase().includes(searchSelectedHero.toLowerCase());
             })
-        }
+        },
+
+        clearFilterAvailableHeroes: function() {
+            this.searchAvailableHero = "";
+        },
+
+        clearFilterSelectedHeroes: function() {
+            this.searchSelectedHero = "";
+        },
     }
 };
 </script>
