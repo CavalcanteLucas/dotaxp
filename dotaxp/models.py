@@ -34,17 +34,20 @@ class Hero(models.Model):
 
     def get_agi_progression(self):
         return [
-            float(self.init_agi + self.gain_agi * level) for level in range(1, 31)
+            float(self.init_agi + self.gain_agi * level)
+            for level in range(1, 31)
         ]
 
     def get_int_progression(self):
         return [
-            float(self.init_int + self.gain_int * level) for level in range(1, 31)
+            float(self.init_int + self.gain_int * level)
+            for level in range(1, 31)
         ]
 
     def get_str_progression(self):
         return [
-            float(self.init_str + self.gain_str * level) for level in range(1, 31)
+            float(self.init_str + self.gain_str * level)
+            for level in range(1, 31)
         ]
 
     def get_stats_progression(self):

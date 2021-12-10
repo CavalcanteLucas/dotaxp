@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="row justify-content-center">
-        <line-chart
-      v-if="statProgressionLoaded"
-      :stats-progression-set="statsProgressionSet"
-    />
+      <line-chart
+        v-if="statsProgressionSetsLoaded"
+        :stats-progression-sets="statsProgressionSets"
+      />
       <div class="col-md-3">
         <h4>Available Heroes</h4>
         <select
@@ -14,11 +14,11 @@
         >
           <option
             v-for="hero in availableHeroes"
-            :key="hero"
-            :value="hero"
-            @click="selectHero"
+            :key="hero.id"
+            :value="hero.name"
+            @click="selectHero(hero.name)"
           >
-            {{ hero }}
+            {{ hero.name }}
           </option>
         </select>
       </div>
@@ -28,28 +28,29 @@
           id="selected-heroes"
           size="4"
           class="form-control"
-          @click="unselectHero"
         >
           <option
             v-for="hero in selectedHeroes"
-            :key="hero"
-            :value="hero"
+            :key="hero.id"
+            :value="hero.name"
+            @click="unselectHero"
           >
-            {{ hero }}
+            {{ hero.name }}
           </option>
         </select>
       </div>
     </div>
     <br>
     <div class="row justify-content-center">
-        <div class="col-md-3">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="plotSelection">
-                Plot Selection!
-            </button>
-        </div>
+      <div class="col-md-3">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          @click="plotSelection"
+        >
+          Plot Selection!
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -63,13 +64,14 @@ export default {
     components: {LineChart},
     data() {
         return {
-            statsProgression: null,
-            statProgressionLoaded: false,
+            statsProgressionSets: [],
+            statsProgressionSetsLoaded: false,
 
             availableHeroes: [],
             availableHeroesLoaded: false,
 
-            selectedHeroes: []
+            selectedHeroes: [],
+            // selectedHeroesLoaded: false,
         }
     },
     async created() {
@@ -86,9 +88,9 @@ export default {
                     }
                 }
             );
-            let data = await response.json();
-            this.statsProgressionSet = data.progression;
-            this.statProgressionLoaded = response.ok;
+            let {data} = await response.json();
+            this.statsProgressionSets = data;
+            this.statsProgressionSetsLoaded = response.ok;
         },
 
         async getAvailableHeroes() {
@@ -101,27 +103,66 @@ export default {
                 }
             );
             let data = await response.json();
-            Object.values(data).forEach((availableHero) => {this.availableHeroes.push(availableHero.name)})
+            Object.values(data).forEach((availableHero) => {
+                this.availableHeroes.push(
+                    {
+                        name: availableHero.name,
+                        id: availableHero.id
+                    }
+                )
+            })
             this.availableHeroesLoaded = response.ok;
         },
 
-        plotSelection: function() {
-            Object.values(this.selectedHeroes).forEach((selectedHero) => {console.log(selectedHero)})
+        plotSelection() {
+            let statsProgressionSets = []
+            Object.values(this.selectedHeroes).forEach(
+                (selectedHero) => {
+                    fetch(
+                        `${process.env.VUE_APP_BACKEND_API}/dotaxp/heroes/${selectedHero.id}/get_stat_progression/`,
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        }
+                    ).then(function(response) {
+                        return response.json();
+                    }).then(function(data) {
+                        statsProgressionSets.push(
+                            {
+                                name: selectedHero.name,
+                                progressionSet: data['stats_progression']
+                            }
+                        )
+                    });
+                }
+            )
+            this.statsProgressionSets = statsProgressionSets
+            // console.log(statsProgressionSets)
+            // this.selectedHeroesLoaded = true;
         },
 
         selectHero: function() {
-            var selection = document.getElementById('available-heroes').value
-            if(selection !== "") {
-                this.selectedHeroes.push(selection)
-                var del = this.availableHeroes.indexOf(selection)
+            var selectedHeroName = document.getElementById('available-heroes').value
+            if(selectedHeroName !== "") {
+                var selectedHero = this.availableHeroes.filter(
+                    hero => hero.name === selectedHeroName
+                )
+                this.selectedHeroes.push(...selectedHero)
+                this.selectedHeroes.sort(function(a, b) {return a.id - b.id})
+                var del = this.availableHeroes.indexOf(...selectedHero)
                 this.availableHeroes.splice(del, 1)
             }
         },
         unselectHero: function() {
-            var selection = document.getElementById('selected-heroes').value
-            if(selection !== "") {
-                this.availableHeroes.push(selection)
-                var del = this.selectedHeroes.indexOf(selection)
+            var selectedHeroName = document.getElementById('selected-heroes').value
+            if(selectedHeroName !== "") {
+                var selectedHero = this.selectedHeroes.filter(
+                    hero => hero.name === selectedHeroName
+                )
+                this.availableHeroes.push(...selectedHero)
+                this.availableHeroes.sort(function(a, b) {return a.id - b.id})
+                var del = this.selectedHeroes.indexOf(...selectedHero)
                 this.selectedHeroes.splice(del, 1)
             }
         }

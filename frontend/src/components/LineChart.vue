@@ -22,13 +22,13 @@ function getColorPallete(palleteLength) {
     ]).flat().flat()
 }
 
-function getStatsDataSets(statsProgressionSet) {
-    let colorPallete = getColorPallete(Object.keys(statsProgressionSet).length + 2);
+function getStatsDataSets(statsProgressionSets) {
+    let colorPallete = getColorPallete(Object.keys(statsProgressionSets).length + 2);
     let returnValue = [];
     let i = 0;
-    Object.entries(statsProgressionSet).forEach(([heroName, statusProgressionData]) => {
-        Object.entries(statusProgressionData).forEach(([statType, statusProgression]) => {
-            returnValue.push(buildStatsDataSet(statType, statusProgression, heroName, colorPallete[i]));
+    statsProgressionSets.forEach((hero) => {
+        Object.entries(hero.progression_set).forEach(([statType, statusProgression]) => {
+            returnValue.push(buildStatsDataSet(statType, statusProgression, hero.name, colorPallete[i]));
             i++;
         })
     });
@@ -38,8 +38,8 @@ function getStatsDataSets(statsProgressionSet) {
 export default {
     extends: Line,
     props: {
-        statsProgressionSet: {
-            type: Object,
+        statsProgressionSets: {
+            type: Array,
             required: true,
         }
     },
@@ -47,7 +47,7 @@ export default {
         return {
             chartData: {
                 labels: range(1, 31),
-                datasets: getStatsDataSets(this.statsProgressionSet),
+                datasets: getStatsDataSets(this.statsProgressionSets),
             },
             options: {
                 scales: {
