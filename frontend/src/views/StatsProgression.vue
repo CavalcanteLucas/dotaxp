@@ -72,8 +72,8 @@
       <div class="col-md-1">
         <button
           type="button"
-          class="btn btn-secondary"
-          @click="plotSelection"
+          class="btn btn-outline-secondary"
+          @click="selectAllHeroes"
         >
           &#8811;
         </button>
@@ -90,8 +90,8 @@
       <div class="col-md-1">
         <button
           type="button"
-          class="btn btn-secondary"
-          @click="plotSelection"
+          class="btn btn-outline-secondary"
+          @click="unselectAllHeroes"
         >
          &#8810;
         </button>
@@ -187,6 +187,20 @@ export default {
                 var del = this.selectedHeroes.indexOf(...selectedHero)
                 this.selectedHeroes.splice(del, 1)
             }
+        },
+
+        selectAllHeroes: function() {
+            this.availableHeroes.forEach((hero) => {
+                this.selectHero(hero.name);
+                this.selectAllHeroes();
+            });
+        },
+
+        unselectAllHeroes: function() {
+            this.selectedHeroes.forEach((hero) => {
+                this.unselectHero(hero.name);
+                this.unselectAllHeroes();
+            });
         },
 
         filterAvailableHeroes: function(availableHeroes) {
