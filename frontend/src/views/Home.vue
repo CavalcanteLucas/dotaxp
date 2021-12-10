@@ -6,7 +6,7 @@
       width="450"
       height="240"
     >
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <HelloWorld msg="Dota2 Beta's Tracker" />
   </div>
 </template>
 
