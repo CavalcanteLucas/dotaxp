@@ -7,37 +7,34 @@
       />
       <div class="col-md-3">
         <h4>Available Heroes</h4>
-        <select
-          id="available-heroes"
-          size="4"
-          class="form-control"
-        >
-          <option
-            v-for="hero in availableHeroes"
-            :key="hero.id"
-            :value="hero.name"
-            @click="selectHero(hero.name)"
-          >
-            {{ hero.name }}
-          </option>
-        </select>
+        <div style="height: 100px; overflow-y: scroll; background-color: grey;">
+          <div class="list-group" id="available-heroes">
+            <button
+              class="list-group-item list-group-item-action list-group-item-dark"
+              v-for="hero in availableHeroes"
+              :key="hero.id"
+              @click="selectHero(hero.name)"
+            >
+              <img :src="require(`../assets/icons/heroes/${hero.name}.png`)" />
+              {{hero.name}}
+            </button>
+          </div>
+        </div>
       </div>
       <div class="col-md-3">
         <h4>Selected Heroes</h4>
-        <select
-          id="selected-heroes"
-          size="4"
-          class="form-control"
-        >
-          <option
-            v-for="hero in selectedHeroes"
-            :key="hero.id"
-            :value="hero.name"
-            @click="unselectHero"
-          >
-            {{ hero.name }}
-          </option>
-        </select>
+        <div style="height: 100px; overflow-y: scroll; background-color: grey;">
+          <div class="list-group" id="selected-heroes">
+            <button
+              class="list-group-item list-group-item-action list-group-item-dark"
+              v-for="hero in selectedHeroes"
+              :key="hero.id"
+              @click="unselectHero(hero.name)">
+              <img :src="require(`../assets/icons/heroes/${hero.name}.png`)" />
+              {{hero.name}}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <br>
@@ -56,8 +53,6 @@
 </template>
 
 <script>
-
-
 import LineChart from '../components/LineChart.vue';
 export default {
     name: 'StatsProgression',
@@ -119,9 +114,8 @@ export default {
             this.statsProgressionSets = statsProgressionSets
         },
 
-        selectHero: function() {
-            var selectedHeroName = document.getElementById('available-heroes').value
-            if(selectedHeroName !== "") {
+        selectHero: function(selectedHeroName) {
+            if(selectedHeroName) {
                 var selectedHero = this.availableHeroes.filter(
                     hero => hero.name === selectedHeroName
                 )
@@ -131,9 +125,8 @@ export default {
                 this.availableHeroes.splice(del, 1)
             }
         },
-        unselectHero: function() {
-            var selectedHeroName = document.getElementById('selected-heroes').value
-            if(selectedHeroName !== "") {
+        unselectHero: function(selectedHeroName) {
+            if(selectedHeroName) {
                 var selectedHero = this.selectedHeroes.filter(
                     hero => hero.name === selectedHeroName
                 )
