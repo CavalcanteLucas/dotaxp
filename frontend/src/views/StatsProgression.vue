@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center gy-5">
+
       <line-chart
         id="stats-progression-chart"
         :stats-progression-sets="statsProgressionSets"
@@ -9,7 +10,7 @@
       <!-- Available Heroes -->
       <div class="col-md-3">
         <form class="form-inline" @submit.prevent>
-          <label><strong>Available Heroes</strong></label>
+          <label style="color: #8B9EB7;"><strong>Available Heroes</strong></label>
 
           <div class="input-group mb-3">
             <input
@@ -17,6 +18,7 @@
               type="text"
               class="form-control"
               placeholder="Hero name"
+              style="background-color: black; color: #8B9EB7;"
             >
             <div class="input-group-append">
               <button
@@ -30,7 +32,7 @@
           </div>
 
         </form>
-        <div style="height: 100px; overflow-y: scroll; background-color: grey;">
+        <div style="height: 10rem; overflow-y: scroll; background-color: #1C242D;">
           <div
             id="available-heroes"
             class="list-group"
@@ -40,9 +42,10 @@
               :key="hero.id"
               class="list-group-item list-group-item-action list-group-item-dark"
               @click="selectHero(hero.name)"
+              style="display: flex; justify-content: flex-start; align-items: center; background-color: #2E3740;"
             >
-              <img :src="require(`../assets/icons/heroes/${hero.name}.png`)">
-              {{ hero.name }}
+              <img style="width: 1.5rem; margin-right: 0.8rem;" :src="require(`../assets/icons/heroes/${hero.name}.png`)">
+              <span style="font-weight: bold; font-size: small; color: #8B9EB7;">{{ hero.name }}</span>
             </button>
           </div>
         </div>
@@ -51,13 +54,14 @@
       <!-- Selected Heroes -->
       <div class="col-md-3">
         <form class="form-inline" @submit.prevent>
-          <label><strong>Selected Heroes</strong></label>
+          <label style="color: #8B9EB7;"><strong>Selected Heroes</strong></label>
           <div class="input-group mb-3">
             <input
               v-model="searchSelectedHero"
               type="text"
               class="form-control"
               placeholder="Hero name"
+              style="background-color: black; color: #8B9EB7;"
             >
             <div class="input-group-append">
               <button
@@ -70,7 +74,7 @@
             </div>
           </div>
         </form>
-        <div style="height: 100px; overflow-y: scroll; background-color: grey;">
+        <div style="height: 10rem; overflow-y: scroll; background-color: #1C242D;">
           <div
             id="selected-heroes"
             class="list-group"
@@ -80,9 +84,10 @@
               :key="hero.id"
               class="list-group-item list-group-item-action list-group-item-dark"
               @click="unselectHero(hero.name)"
+              style="display: flex; justify-content: flex-start; align-items: center; background-color: #2E3740"
             >
-              <img :src="require(`../assets/icons/heroes/${hero.name}.png`)">
-              {{ hero.name }}
+              <img style="width: 1.5rem; margin-right: 0.8rem;" :src="require(`../assets/icons/heroes/${hero.name}.png`)">
+              <span style="font-weight: bold; font-size: small; color: #8B9EB7;">{{ hero.name }}</span>
             </button>
           </div>
         </div>
