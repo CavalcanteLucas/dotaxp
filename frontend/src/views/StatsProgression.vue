@@ -8,7 +8,7 @@
       />
 
       <!-- Available Heroes -->
-      <div class="col-md-3">
+      <div class="col-md-4">
         <form class="form-inline" @submit.prevent>
           <label style="color: #8B9EB7;"><strong>Available Heroes</strong></label>
 
@@ -52,7 +52,7 @@
       </div>
 
       <!-- Selected Heroes -->
-      <div class="col-md-3">
+      <div class="col-md-4">
         <form class="form-inline" @submit.prevent>
           <label style="color: #8B9EB7;"><strong>Selected Heroes</strong></label>
           <div class="input-group mb-3">

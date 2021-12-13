@@ -26,5 +26,33 @@
             "gain_int": 1.8,
             "gain_str": 2.9
         }
+    },
+    {
+        "model": "dotaxp.Hero",
+        "pk": 3,
+        "fields": {
+            "name": "AncientAparition",
+            "main_attr": "INT",
+            "init_agi": 20,
+            "init_int": 23,
+            "init_str": 20,
+            "gain_agi": 2.2,
+            "gain_int": 3.4,
+            "gain_str": 1.9
+        }
+    },
+    {
+        "model": "dotaxp.Hero",
+        "pk": 4,
+        "fields": {
+            "name": "Axe",
+            "main_attr": "STR",
+            "init_agi": 20,
+            "init_int": 18,
+            "init_str": 25,
+            "gain_agi": 2.2,
+            "gain_int": 1.6,
+            "gain_str": 3.4
+        }
     }
 ]
